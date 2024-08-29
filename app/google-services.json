@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627372566453",
+    "project_id": "proiect-dsdm",
+    "storage_bucket": "proiect-dsdm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627372566453:android:0c17271a63ceebdfb31bfc",
+        "android_client_info": {
+          "package_name": "com.example.proiect_dsdm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4jiWTjM_rA05vFkNXsQr2lbBANA1m8PQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
