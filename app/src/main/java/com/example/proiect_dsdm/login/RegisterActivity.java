@@ -1,6 +1,7 @@
 package com.example.proiect_dsdm.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,13 +22,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    private static final String PREF_NAME = "AuthPrefs";
+    private static final String KEY_USER_ID = "userId";
     private EditText emailTextView, passwordTextView;
     private Button btn;
     private ProgressBar progressbar;
     private FirebaseAuth mAuth;
     private Button loginButton;
-
+    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
         btn = findViewById(R.id.register);
         progressbar = findViewById(R.id.loading);
         loginButton = findViewById(R.id.tologin);
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         Toast.makeText(getApplicationContext(),"Test.",Toast.LENGTH_LONG).show();
 
@@ -77,6 +81,11 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(),"Registration successful!",Toast.LENGTH_LONG).show();
                             progressbar.setVisibility(View.GONE);
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(KEY_USER_ID, mAuth.getCurrentUser().getUid());
+                            editor.apply();
+
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(intent);
                         }

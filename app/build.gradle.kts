@@ -42,10 +42,13 @@ dependencies {
     implementation(libs.google.services)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.navigation.fragment.ktx)
+    implementation(libs.recyclerview)
+    implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
+    annotationProcessor(libs.androidx.room.compiler)
 }
