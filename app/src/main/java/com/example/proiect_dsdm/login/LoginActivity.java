@@ -1,5 +1,6 @@
 package com.example.proiect_dsdm.login;
 
+import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.os.Bundle;
 import android.content.Intent;
@@ -26,25 +27,26 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressbar;
 
     private Button registerButton;
-
+    private SharedPreferences sharedPreferences;
     private FirebaseAuth mAuth;
+    private static final String PREF_NAME = "AuthPrefs";
+    private static final String KEY_USER_ID = "userId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // taking instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // initialising all views through id defined above
         emailTextView = findViewById(R.id.username);
         passwordTextView = findViewById(R.id.password);
         Btn = findViewById(R.id.login);
         progressbar = findViewById(R.id.loading);
         registerButton = findViewById(R.id.registration);
 
-        // Set on Click Listener on Sign-in button
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -63,16 +65,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUserAccount()
     {
-
-        // show the visibility of progress bar to show loading
         progressbar.setVisibility(View.VISIBLE);
 
-        // Take the value of two edit texts in Strings
         String email, password;
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
 
-        // validations for input email and password
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(),
                             "Please enter email!!",
@@ -89,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // signin existing user
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
                         new OnCompleteListener<AuthResult>() {
@@ -103,11 +100,12 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.LENGTH_LONG)
                                             .show();
 
-                                    // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
 
-                                    // if sign-in is successful
-                                    // intent to home activity
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString(KEY_USER_ID, mAuth.getCurrentUser().getUid());
+                                    editor.apply();
+
                                     Intent intent
                                             = new Intent(LoginActivity.this,
                                             MainActivity.class);
@@ -116,13 +114,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                 else {
 
-                                    // sign-in failed
                                     Toast.makeText(getApplicationContext(),
                                                     "Login failed!!",
                                                     Toast.LENGTH_LONG)
                                             .show();
 
-                                    // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
                                 }
                             }
